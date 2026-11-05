@@ -16,10 +16,10 @@
 | Ресурс | Что там |
 |---|---|
 | `myutzy/awesome-structured-text` (GitHub) | Курируемый список: IDE, тестинг (coUnit/TcUnit/UniTest), компиляторы (matiec, RuSTy, blark, iec-checker), библиотеки (OSCAT, structured-text-utilities, TcOpen), расширения (STweep, vscode-st, tree-sitter), DevOps (Twinpack, zkbuild-action), книги, курсы, каналы |
-| Stefan Henneken IEC 61131-3 Blog | ООП и паттерны в IEC 61131-3 (источник паттернов из `Library/_ref/Applied-Design-Patterns-in-CODESYS-V3/`) |
+| Stefan Henneken IEC 61131-3 Blog | ООП и паттерны в IEC 61131-3 (источник паттернов — репозиторий Applied-Design-Patterns-in-CODESYS-V3, изучен локально) |
 | PLCopen | `plcopen.org` — стандарты (Motion, TC6 XML, OPC UA mapping) |
 | OMAC | `omac.org` — PackML Implementation Guide (бесплатно) |
-| ISA | `isa.org` — TR88.00.02-2022 (платно; копия есть в `Library/_ref/PackML/PackML_CodeSys/doc/`) |
+| ISA | `isa.org` — TR88.00.02-2022 (платно; рабочая копия изучена локально) |
 
 ## Курсы и видео (из awesome-списка и веб-обхода)
 
@@ -42,5 +42,5 @@
 | `.lib` (V2) не открывается | формат V2 | брать V3 `.library` |
 | TwinCAT не принимает CODESYS-библиотеку | битая ссылка/разные системные библиотеки | править ссылки; лучше использовать порт под TwinCAT |
 
-Постоянная пополняемая карта граблей этой машины — `Rules/06-pitfalls.md`
+Постоянная пополняемая карта граблей — `docs/06-pitfalls.md`
 (источник истины, сюда не дублировать).

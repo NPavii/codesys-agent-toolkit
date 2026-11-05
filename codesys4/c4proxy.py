@@ -4,7 +4,7 @@
 Схема: Chrome (--proxy-server=127.0.0.1:8791) -> CONNECT localhost:<c4port>
 -> прокси туннелирует TCP и параллельно парсит WS-фреймы (трафик plaintext).
 
-Лог: c4probe/proxy_traffic.log  (C> / >S — клиент->сервер / сервер->клиент)
+Лог: codesys4/proxy_traffic.log  (C> / >S — клиент->сервер / сервер->клиент)
 """
 import asyncio, socket, struct, sys, time, os
 

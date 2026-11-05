@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""collect.py - сборщик решений для Library/_dataset (см. README.md датасета).
+"""collect.py - сборщик решений для датасета (см. README.md датасета).
 
 Почему так: bridge_daemon удаляет task-файл после исполнения, а bridge_client
-удаляет result-файл после чтения (bridge_client.py:93) - ретроспективно собрать
-нечего. Поэтому сбор встраивается в точку отправки задачи.
+удаляет result-файл после чтения - ретроспективно собрать нечего. Поэтому
+сбор встраивается в точку отправки задачи.
 
 Режимы:
   submit <task.json> [--timeout N]   отправить задачу мосту через bridge_client,
@@ -14,7 +14,9 @@
                                      в queue (клиент не дочитал / упал)
   digest                             сводка архива (операции, вердикты сборок)
 
-Архив: Library/_dataset/bridge_log/YYYY-MM/<task_id>.task.json / .result.json
+Архив: bridge_log/YYYY-MM/<task_id>.task.json / .result.json (рядом с collect.py).
+Каталог моста: env CODESYS_BRIDGE_DIR (bridge_client.py, bridge_daemon.cmd),
+иначе ../bridge относительно collect.py.
 Идемпотентен: уже заархивированные id пропускает.
 Демон CODESYS не трогает; только файлы queue/ и собственный архив.
 """
@@ -26,9 +28,8 @@ import sys
 import time
 from datetime import datetime
 
-BRIDGE_DIR = os.path.normpath(os.path.join(
-    os.path.dirname(os.path.abspath(__file__)),
-    "..", "..", "CodeSYS-MCP", "bridge"))
+BRIDGE_DIR = os.environ.get("CODESYS_BRIDGE_DIR") or os.path.normpath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "bridge"))
 QUEUE_DIR = os.path.join(BRIDGE_DIR, "queue")
 CLIENT = os.path.join(BRIDGE_DIR, "bridge_client.py")
 DATASET_DIR = os.path.dirname(os.path.abspath(__file__))

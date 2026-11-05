@@ -1,9 +1,9 @@
 # Паттерны ООП в CODESYS (IEC 61131-3)
 
-Источники: `Library/_ref/Applied-Design-Patterns-in-CODESYS-V3/` (проекты
+Источники: Applied-Design-Patterns-in-CODESYS-V3 (GitHub, проекты
 Aliazzzz; первоисточники — S. Henneken, TwinCAT-блог; A. R. Narvaez Contreras,
 CODESYS-форум). Ниже — канонические реализации на ST, согласованные с
-`Rules/07-standards.md` (ООП: интерфейсы, наследование, инъекция зависимостей).
+`docs/07-standards.md` (ООП: интерфейсы, наследование, инъекция зависимостей).
 
 > Правило из репозитория-источника: «паттерны облегчают жизнь, но лучшее
 > решение — простейшее, даже процедурное». Паттерн — инструмент, не цель.
@@ -76,7 +76,7 @@ Execute := fbMachine.M_Start();
 нужную реализацию. Клиент зависит только от интерфейсов.
 
 Применение: создание устройств одного типа (приводы разных вендоров,
-датчики) по конфигурации `EquipmentCfg` — см. `Rules/04-kimi-lib.md`.
+датчики) по конфигурации `EquipmentCfg` — см. `docs/04-kimi-lib.md` и `library/README.md`.
 
 ## 4. Builder (Строитель)
 
@@ -104,11 +104,11 @@ Execute := fbMachine.M_Start();
 экземпляр FB недоступен, поэтому канонически: один экземпляр в `VAR_GLOBAL`
 + FB_Init-защита от повторной инициализации состояния. Автор источника
 сам называет Singleton антипаттерном (глобальное состояние). В наших
-проектах вместо Singleton — GVL с явными экземплярами (`Rules/07`).
+проектах вместо Singleton — GVL с явными экземплярами (`docs/07`).
 
 ## Связь с PackML/SPT
 
-SPT Framework (`Library/_ref/PackML/SPT-Libraries/`) — практическое
+SPT Framework (Beckhoff-USA-Community/SPT-Libraries, GitHub) — практическое
 применение этих же идей: `FB_PackML_BaseModule` (наследование/шаблонный
 метод Initialize/CyclicLogic), компоненты (композиция, инъекция через
 интерфейсы), события (Observer через EventLogger).

@@ -4,16 +4,22 @@
 «цифровая копия лучших решений». Пополняется по мере работы: проверенные решения
 переносятся сюда, документируются и становятся доступны всем агентам и проектам.
 
-- **Источник истины: `library/Kimi_Lib.library`** (файл `.library`; правится
+> **Важно:** файл библиотеки `Kimi_Lib.library` (как и любые другие файлы
+> CODESYS-приложений — `.project`, `.library`, `.compiled-library`) в этот
+> репозиторий **не включён**. Документ описывает архитектуру и может
+> использоваться как ТЗ для собственной реализации. Рабочие правила ведения
+> такой библиотеки — в [docs/04-kimi-lib.md](../docs/04-kimi-lib.md).
+
+- **Источник истины** — один файл `.library` в вашей области (правится
   напрямую через MCP-инструменты `codesys-mcp` — см. [NPavii/codesys-mcp-server](https://github.com/NPavii/codesys-mcp-server))
 - **Валидация**: компиляция `.library` напрямую через `check_all_pool_objects()`
   (операция `validate_library` моста, standalone, ~7 с, без проекта-зеркала).
-- Статус: компилируется с **0 ошибок, 0 предупреждений** (CODESYS V3.5 SP21 Patch 1; pool-check)
+- Статус референсной реализации: **0 ошибок, 0 предупреждений** (CODESYS V3.5 SP21 Patch 1; pool-check)
 - Дата создания фундамента: 2026-09-17; переход на `.library`: 2026-09-18
 - Рабочие правила агента, из которого выросла библиотека: [docs/01-workflow.md](../docs/01-workflow.md), [docs/04-kimi-lib.md](../docs/04-kimi-lib.md)
 - Комментарии в коде — **на английском**; документация — на русском
 - Агент **вправе сам пополнять библиотеку** типовыми решениями (критерии и чек-лист — в docs/04-kimi-lib.md)
-- Агент **обязан обновлять этот README** (история версий + состав) после каждого изменения
+- Агент **обязан обновлять README библиотеки** (история версий + состав) после каждого изменения
 - **Удаление/переписывание блоков — только по явной команде владельца** и только
   указанного блока; самопроизвольные удаления запрещены
 
@@ -24,7 +30,7 @@ v1.0.0.4 (`C:\ProgramData\CODESYS\Managed Libraries\...`), подключённ�
 как зависимость. В коде используется напрямую через неймспейс `PACK_ML`:
 `PACK_ML.State`, `PACK_ML.IUnitMode`, `PACK_ML.UnitMode`, `PACK_ML.UnitModeManager`.
 Дублировать состояния/режимы в Kimi_Lib **не нужно** (ранее дублировали — удалено
-в v0.4.0). Исходники оригинала в `_ref/packml_src/` — справочно.
+в v0.4.0). Исходники оригинала поставляются с CODESYS — справочно.
 
 Идея: **всё технологическое программирование пишется под состояние оборудования,
 а набор состояний и разрешения конфигурируются в ФБ.** Агент/программист не пишет
@@ -81,7 +87,7 @@ END_IF
 `EquipmentCfg` можно отдать менеджеру: `fbManager.Register(fbEquip.GetUnitMode());` —
 тогда переключение режимов `fbManager.SwitchUnitMode('ИмяРежима')` контролирует всю линию.
 
-## Блоки MachineLib (перенос v0.3.0, референс `_archive/MachineLib_Documentation.html`)
+## Блоки MachineLib (перенос v0.3.0, референс — документация MachineLib, сторонний продукт)
 
 Реализованы все модули, документированные в MachineLib. Тайминг (v0.5.0+): стандартные
 TON для импульсов/задержек, виртуальные часы вызывающего `tNow : TIME` (инкремент за скан)
@@ -113,16 +119,15 @@ Roadmap (в MachineLib перечислены в разделе «Что ещё 
 в документе только идеи, без спецификаций; не реализованы):
 `FB_ValveFeedback`, `FB_AirConsumption`, `FB_TemperatureTrend`, `FB_DataExchange`.
 
-## Как подключить библиотеку к проекту
+## Как использовать этот дизайн в своём проекте
 
-1. Открыть целевой проект в CODESYS.
-2. Вариант А (копирование): добавить POUs библиотеки в проект копированием
-   (библиотека хранится в текстовом формате, объекты читаются через MCP
-   `codesys_get_object` / экспорт PLCopenXML).
-3. Вариант Б (бинарник): `Tools → Save as compiled library...` поверх
-   `Kimi_Lib.library` в установленном CODESYS, полученный файл положить в
-   репозиторий библиотек CODESYS — далее подключать через Library Manager
-   как обычную библиотеку (namespace `Kimi_Lib`).
+1. Реализуйте блоки по спецификациям ниже (или адаптируйте под свои
+   обозначения) в своей библиотеке `.library`.
+2. Валидация: `check_all_pool_objects()` через мост (операция
+   `validate_library`) — критерий 0 ошибок, 0 предупреждений.
+3. Подключение к проекту — через Library Manager (`lib_install` в
+   репозиторий библиотек + `lib_add` в проект), без копирования объектов
+   в проект; использование по namespace (см. `docs/04-kimi-lib.md`).
 
 ## История версий
 
@@ -130,9 +135,9 @@ Roadmap (в MachineLib перечислены в разделе «Что ещё 
 |---|---|---|
 | 0.5.0 | 2026-09-23 | **EquipmentCfg v3**: конфигурация одним вызовом (`xConfigure`/первый вызов) + кнопки внутри FB (`xStartBtn/xStopBtn/xResetBtn`, R_TRIG) + публичный `NextState()` с фолбэк-резолвером против `dwSupportedStates` (нет Starting→Execute, Holding→Held→UnHolding→Execute, Stopping→Stopped→Idle и т.д.). **Удалён `FB_AlarmManager`** (по команде владельца; аварии — Alarm Configuration + `FB_FirstFault` + `FB_EventLogger`). **Тайминг без `udiNowMs`**: `FB_Blinker`/`FB_ButtonStuck`/`FB_SafetyMonitor`/`FB_OperatorButtons` — стандартные TON; `FB_CycleTimeAnalyzer`/`FB_SensorStuck`/`FB_PneumoCylinder`/`FB_Heartbeat`/`FB_ProductionStats` — виртуальные часы `tNow : TIME` (инкремент за скан); фронты — R_TRIG/F_TRIG. Зависимость от системной Standard (TON/R_TRIG). Валидация: 0 ошибок, 0 предупреждений |
 | 0.4.0 | 2026-09-21 | **Миграция фундамента на vendor-библиотеку.** Удалены дубли PackML: `PackState` (был `State`), `IUnitMode`, `UnitMode`, `UnitModeManager`, `GVL_Constants` — теперь используется установленная 3S `OMAC PackML State Machine` 1.0.0.4 через namespace `PACK_ML` (подключена как зависимость Kimi_Lib). `EquipmentCfg` переписан как надстройка над `PACK_ML.UnitMode` (тот же API + разрешения смены режима `dwAllowedLeaving/EnteringIntoStates`, методы `StateEntered`/`GetUnitMode` → `PACK_ML.IUnitMode`). Перенацелены `FB_OperatorButtons` и `FB_TowerLight` (`PACK_ML.State` вместо `PackState`). По команде владельца («не копировать PACKML, использовать существующую библиотеку»). Валидация: 0 ошибок, 0 предупреждений |
-| 0.3.1 | 2026-09-20 | Без изменений кода. Инфраструктура: проверочное зеркало `CoDeSyS_Lib.project` упразднено — `validate_library` компилирует `.library` напрямую (`check_all_pool_objects()`, standalone, ~7 с). Валидация: 0 ошибок, 0 предупреждений |
-| 0.3.0 | 2026-09-19 | Перенос модулей MachineLib (референс `_archive/MachineLib_Documentation.html`): +3 DUT (`E_LightMode`, `E_PanelMode`, `E_CylSensors`) и +14 FB (`FB_TimerMs`, `FB_Blinker`, `FB_TowerLight`, `FB_OperatorButtons`, `FB_SafetyMonitor`, `FB_AlarmManager`, `FB_PneumoCylinder`, `FB_SensorStuck`, `FB_ButtonStuck`, `FB_CycleTimeAnalyzer`, `FB_FirstFault`, `FB_EventLogger`, `FB_Heartbeat`, `FB_ProductionStats`). `E_PackMLState`/`FB_PackML` осознанно не дублировались — используются `PackState`/`UnitMode`/`EquipmentCfg`. **Переименование `State` → `PackState`**: имя `State` перекрывается переменной `AlarmGlobals.STATE : INT` из системной библиотеки `#AlarmManager` (dummy для notification action «write variable»), что давало сотни ошибок компиляции в проекте с Alarm Configuration. Таймеры — собственный `FB_TimerMs` с инжектируемым тиком `udiNowMs` (библиотека самодостаточна, без Standard). Валидация: 0 ошибок |
-| 0.2.0 | 2026-09-18 | Перенос источника истины в `Kimi_Lib.library` (`.library`). PackML-фундамент (State, IUnitMode, UnitMode, UnitModeManager) + EquipmentCfg перенесены и проходят валидацию: 0 ошибок, 0 предупреждений. `CoDeSyS_Lib.project` — теперь проверочное зеркало |
+| 0.3.1 | 2026-09-20 | Без изменений кода. Инфраструктура: проверочное зеркало-проект упразднено — `validate_library` компилирует `.library` напрямую (`check_all_pool_objects()`, standalone, ~7 с). Валидация: 0 ошибок, 0 предупреждений |
+| 0.3.0 | 2026-09-19 | Перенос модулей MachineLib (референс — документация MachineLib, сторонний продукт): +3 DUT (`E_LightMode`, `E_PanelMode`, `E_CylSensors`) и +14 FB (`FB_TimerMs`, `FB_Blinker`, `FB_TowerLight`, `FB_OperatorButtons`, `FB_SafetyMonitor`, `FB_AlarmManager`, `FB_PneumoCylinder`, `FB_SensorStuck`, `FB_ButtonStuck`, `FB_CycleTimeAnalyzer`, `FB_FirstFault`, `FB_EventLogger`, `FB_Heartbeat`, `FB_ProductionStats`). `E_PackMLState`/`FB_PackML` осознанно не дублировались — используются `PackState`/`UnitMode`/`EquipmentCfg`. **Переименование `State` → `PackState`**: имя `State` перекрывается переменной `AlarmGlobals.STATE : INT` из системной библиотеки `#AlarmManager` (dummy для notification action «write variable»), что давало сотни ошибок компиляции в проекте с Alarm Configuration. Таймеры — собственный `FB_TimerMs` с инжектируемым тиком `udiNowMs` (библиотека самодостаточна, без Standard). Валидация: 0 ошибок |
+| 0.2.0 | 2026-09-18 | Перенос источника истины в `.library`. PackML-фундамент (State, IUnitMode, UnitMode, UnitModeManager) + EquipmentCfg перенесены и проходят валидацию: 0 ошибок, 0 предупреждений |
 | 0.1.0 | 2026-09-17 | Фундамент: PackML (State, IUnitMode, UnitMode, UnitModeManager) + EquipmentCfg. Компиляция 0 ошибок |
 
 ## Эталонные материалы

@@ -59,5 +59,5 @@
 1. Версия CODESYS в манифесте ≥ нашей (3.5.21.x) и не только 32-bit.
 2. Лицензия (OSCAT/MIT — ок; «freeware без исходников» — риск).
 3. Активность: коммиты/тикеты за последние 2 года.
-4. Известные CVE (CISA ICS advisories) и грабли (см. `Rules/06-pitfalls.md`).
+4. Известные CVE (CISA ICS advisories) и грабли (см. `docs/06-pitfalls.md`).
 5. Конфликты пространств имён со Standard/Util/Kimi_Lib.

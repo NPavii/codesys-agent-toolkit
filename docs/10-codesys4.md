@@ -15,10 +15,10 @@ JSON-RPC/WS-интерфейс существует (см. ниже), но ко�
 
 Рабочий цикл агента:
 1. Правим файлы проекта напрямую (текст `*.prg.st` / `*.gvl` / json).
-2. `python c4probe/c4_build.py <проект.fbsdev>` — сборка + разбор диагностики.
+2. `python codesys4/c4_build.py <проект.fbsdev>` — сборка + разбор диагностики.
 3. Ошибки получаем объектами `Diag` (severity, message, path, line, col).
 
-## Headless-сборка (c4probe/c4_build.py)
+## Headless-сборка (codesys4/c4_build.py)
 
 * `c4-cli bootapp compile <Application.iecapp> [target]` — полная офлайн-сборка.
   **exit code 0 = успех**; иначе ошибки с позициями `(строка, колонка, length)` в stdout.
@@ -32,7 +32,7 @@ JSON-RPC/WS-интерфейс существует (см. ниже), но ко�
 * Разбор вывода: длинные пути c4-cli рвёт по строкам — парсер склеивает
   обратно по факту существования файла (`c4_build.parse_diagnostics`).
 
-## API сессий (c4probe/c4_api.py) — только если headless не хватает
+## API сессий (codesys4/c4_api.py) — только если headless не хватает
 
 Нужно для: онлайн-операций по контроллеру (Login/Start/Stop/Reset через
 `IOnlineAppService`), живого дерева объектов, наблюдения за сообщениями.
@@ -40,7 +40,8 @@ JSON-RPC/WS-интерфейс существует (см. ниже), но ко�
 
 Транспорт и авторизация (всё уже в `c4_api.py`):
 * Запуск: `c4-cli standalone-session <проект.fbsdev> --with-browser c4capture.cmd`
-  (c4capture пишет URL с одноразовым InitToken в `c4probe/last_url.txt`, браузер не открывает).
+  (c4capture пишет URL с одноразовым InitToken в `last_url.txt` рядом со скриптом,
+  браузер не открывает).
 * Обмен: `curl -H "InitToken: <token>" http://127.0.0.1:<port>/api/UserSessions`
   → cookie `codesys_4_auth` + заголовок `XSRF-TOKEN`. Токен одноразовый.
 * RPC: WebSocket `ws://127.0.0.1:<port>/api/JsonRpc`, сабпротокол `tab.<uuid>`,
@@ -73,8 +74,8 @@ JSON-RPC/WS-интерфейс существует (см. ниже), но ко�
 
 ## Карта файлов
 
-* `c4probe/c4_build.py` — headless: `compile_app()`, `C4Project`, `parse_diagnostics()`.
-* `c4probe/c4_api.py` — сессии: `c4_connect()`, `C4` (WS + HTTP-файлы + пулы сообщений).
-* `c4probe/c4_client.py` — низкоуровневый WS-клиент (тесты, прототипы).
-* `c4probe/c4capture.cmd` — перехват InitToken без открытия браузера.
+* `codesys4/c4_build.py` — headless: `compile_app()`, `C4Project`, `parse_diagnostics()`.
+* `codesys4/c4_api.py` — сессии: `c4_connect()`, `C4` (WS + HTTP-файлы + пулы сообщений).
+* `codesys4/c4_client.py` — низкоуровневый WS-клиент (тесты, прототипы).
+* `codesys4/c4capture.cmd` — перехват InitToken без открытия браузера.
 * Справка c4-cli: `c4-cli --help`, `c4-cli bootapp compile --help`.

@@ -1,11 +1,12 @@
 # GitHub: изученные проекты CODESYS
 
-Дата среза: 2026-09-21. Репозитории склонированы в `Library/_ref/` (только чтение).
+Дата среза: 2026-09-21. Репозитории изучены локально (клонированы в приватную
+папку эталонных материалов; в этот репозиторий не включены — только выводы).
 
-## PackML-бандл (11 репозиториев) — `Library/_ref/PackML/`
+## PackML-бандл (11 репозиториев)
 
-Стандарт ISA TR88.00.02 — фундамент наших программ. Полный разбор:
-[Library/_ref/PackML/README.md](../../Library/_ref/PackML/README.md).
+Стандарт ISA TR88.00.02 — фундамент наших программ. Сжатая рабочая выжимка:
+[knowledge-base/05_Best_Practices/state_machine_patterns.md](../05_Best_Practices/state_machine_patterns.md).
 
 | Репозиторий | Платформа | Ценность для нас |
 |---|---|---|
@@ -20,7 +21,7 @@
 | hijaaack/JB.TcHmiPackMLStateDiagram | TcHMI | Виджет диаграммы состояний |
 | point85/OEE-Domain, point85/OEE-Operations | Java | OEE-движок поверх PackML-данных (ISO 22400) |
 
-## Паттерны проектирования — `Library/_ref/Applied-Design-Patterns-in-CODESYS-V3/`
+## Паттерны проектирования (Aliazzzz/Applied-Design-Patterns-in-CODESYS-V3)
 
 7 паттернов ООП в CODESYS V3, каждый — открываемый `.project` + README.
 Разбор и канонические реализации: [../05_Best_Practices/oop_patterns.md](../05_Best_Practices/oop_patterns.md).
@@ -37,7 +38,7 @@
 | Паттерны LD-логики | — | Patterns of Ladderlogic programming |
 
 Примечание автора репозитория: «паттерны облегчают жизнь, но лучшее решение —
-простейшее решение, даже процедурное». Согласуется с `Rules/07-standards.md`.
+простейшее решение, даже процедурное». Согласуется с `docs/07-standards.md`.
 
 ## Прочее
 

@@ -2,7 +2,7 @@
 
 ## Вердикт: FieldFox/Codesys-Mqtt-lib — НЕ пригодна
 
-Репозиторий: `Library/_ref/Codesys-Mqtt-lib/`. Проверено чтением исходников.
+Репозиторий: FieldFox/Codesys-Mqtt-lib (GitHub), изучен локально. Проверено чтением исходников.
 
 * **Платформа**: CODESYS **V2.3 / WAGO** (стиль C-интеропа: `mqtt.c`/`mqtt.h`,
   `.lib`/`.pro`, зависимости `SysLibSockets`, `WagoLibEthernet_01`,

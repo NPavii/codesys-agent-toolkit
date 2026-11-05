@@ -22,19 +22,19 @@
 ## Как пользоваться (для AI-агента)
 
 * Задачи «как спроектировать машину/модуль/автомат» → `05_Best_Practices/state_machine_patterns.md`
-  + полный разбор PackML: `Library/_ref/PackML/README.md`.
+  + карта эталонных репозиториев: `01_Projects_and_Templates/github_projects.md`.
 * Задачи «ООП в ST: интерфейсы/наследование/паттерн» → `05_Best_Practices/oop_patterns.md`.
 * Задачи «подключить протокол/библиотеку» → `02_Libraries/*` (проверяй версию CODESYS!).
 * Задачи «автоматизировать IDE» → `03_AI_Prompts_and_MCP/mcp_servers_comparison.md`;
-  рабочие регламенты моста — в `Rules/02-bridge.md` (не дублировать здесь).
-* Эталонные проекты лежат в `Library/_ref/` (PackML, SPT, TwinCAT-примеры) —
-  только чтение.
+  рабочие регламенты моста — в `../docs/02-bridge.md` (не дублировать здесь).
+* Эталонные проекты (PackML-бандл, SPT, TwinCAT-примеры) изучены локально —
+  только выводы, клоны в репозиторий не включены.
 
 ## Сводка ресурсов (по состоянию 2026-09-21, конец веб-обхода)
 
 | Тип | Количество | Где |
 |---|---|---|
-| Репозиториев изучено локально | 14 | `Library/_ref/PackML/` (11), `Library/_ref/Applied-Design-Patterns-in-CODESYS-V3`, `Library/_ref/Codesys-Mqtt-lib`, плюс 3 MCP в `Example_MCP/` |
+| Репозиториев изучено локально | 14 | PackML-бандл (11), Applied-Design-Patterns-in-CODESYS-V3, Codesys-Mqtt-lib, плюс 3 MCP-сервера (локально, клоны не включены) |
 | MCP-серверов сравнено | 11 | `03_AI_Prompts_and_MCP/mcp_servers_comparison.md` |
 | Библиотек/утилит охвачено | ~20 | `02_Libraries/standard_libraries.md`, `free_tools.md` |
 | Паттернов разобрано | 7 | `05_Best_Practices/oop_patterns.md` |

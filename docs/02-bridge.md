@@ -1,12 +1,14 @@
 # Правило 02. Работа с мостом (bridge) и тёплым демоном
 
 Мост — план Б, когда возможностей MCP не хватает, а также основной способ
-компиляции и тяжёлых серийных изменений. Всё нижесказанное проверено на этой
-машине. Расположение: `CodeSYS-MCP/bridge/`.
+компиляции и тяжёлых серийных изменений. Всё нижесказанное проверено
+эмпирически (CODESYS V3.5 SP21 Patch 1). Мост живёт в репозитории
+MCP-сервера ([codesys-mcp-server](https://github.com/NPavii/codesys-mcp-server)),
+каталог `bridge/`.
 
 ### Мост (для операций, которых нет в MCP)
 
-В папке `CodeSYS-MCP/bridge/`: пишешь `task.json` (`{"op": ..., "args": {...}}`),
+В каталоге `bridge/` MCP-сервера: пишешь `task.json` (`{"op": ..., "args": {...}}`),
 запускаешь `cmd //c bridge.cmd`, читаешь `result.json`.
 
 * `task.json`/`result.json` — общий ресурс: **перед каждым запуском перезаписывай task.json заново**.
@@ -23,7 +25,7 @@
   `ensure_task`, `create_interface`,
   `add_device`, `create_project`,
   `validate_library` (обязателен после любого изменения библиотеки: компилирует
-  `Kimi_Lib.library` напрямую, `args.library` = путь к `.library`; `args.project`
+  `.library` напрямую, `args.library` = путь к `.library`; `args.project`
   не обязателен — если задан и файл существует, выполняется ещё и инкрементальный
   синк в проект-зеркало, если нет/удалён — валидация библиотеки standalone),
   `delete_object` (удаление объекта; **только по явной команде пользователя** — см. «Библиотека»).
@@ -50,8 +52,9 @@
 * Контроль: `python bridge_client.py ping` (живость, аптайм, открытые проекты),
   `python bridge_client.py stop` (save + close всех проектов + выход),
   `python bridge_client.py wait` (дождаться загрузки после старта).
-* Замеры на Project_One: get_object 1.4 с, tree 0.8 с, build 13 с (компиляция SoftMotion
-  тяжёлая сама по себе) — против 23–29 с разового запуска на любую операцию.
+* Замеры на тестовом проекте (~110 объектов, SoftMotion): get_object 1.4 с,
+  tree 0.8 с, build 13 с (компиляция SoftMotion тяжёлая сама по себе) — против
+  23–29 с разового запуска на любую операцию.
 * **Правило владения:** пока демон держит проект открытым, GUI CODESYS и MCP-мост к
   этому проекту его открыть не смогут. Рабочий цикл: стартуешь демон → работаешь через
   него → `stop` перед ручной работой в GUI. Разовый мост и MCP остаются fallback'ом,
@@ -94,7 +97,7 @@
   severity сравнивать декодированной строкой (`str(m.severity)` — 'Error'/'Warning'/
   'FatalError'; битовая маска Severity across versions ненадёжна), у объектов сообщений
   есть `.text/.prefix+.number/.object.get_name()/.position_text`.
-  Заимствовано из `Example_MCP/luke-harrimanCodesys-MCP` и `zbest1000mcptoolkit-for-codesys`.
+  Заимствовано из luke-harriman/Codesys-MCP и zbest1000/mcptoolkit-for-codesys (GitHub).
 * После `taskkill //F` по процессу CODESYS рядом с проектом остаётся файл `*.~u` —
   удали его перед следующим открытием, иначе «проект занят».
 * **MCP-сервер умеет в демон сам**: `src/mcp/bridge.ts` проверяет пульс `daemon_ping.json`
@@ -106,8 +109,8 @@
   маршрутизация действует с новой сессии. End-to-end тест — `node test-daemon-route.mjs`
   (демон остановлен: ожидается `daemonAlive before: false` → автостарт → `ok: true`).
 * **`get_object`/`list_objects`/`tree`/`obj_info` принимают `slim: true`** — children
-  отдаются именами (name+type) вместо полного дампа: 109 объектов Project_One — копеечный
-  ответ вместо мегабайтного. По умолчанию (без slim) поведение прежнее.
+  отдаются именами (name+type) вместо полного дампа: 109 объектов тестового
+  проекта — копеечный ответ вместо мегабайтного. По умолчанию (без slim) поведение прежнее.
 
 ## Окно-монитор демона (2026-10-27)
 
@@ -164,6 +167,6 @@ librarymanager, find_obj, tree, get_project`).
 4. Паттерн вызова: писать task-JSON скриптом → `python bridge_client.py
    submit <file> --timeout N` → удалить временный файл. В параллельных
    сессиях — уникальные имена через `CB_TASK`/`CB_RESULT`.
-   Для накопления датасета (`Library/_dataset/`) вместо прямого submit —
-   `python Library/_dataset/collect.py submit <file> --timeout N`: архивирует
-   task+result в `bridge_log/` и пишет сводку; демон не трогает.
+   Для накопления датасета решений вместо прямого submit —
+   `python dataset/collect.py submit <file> --timeout N` (см. `dataset/README.md`):
+   архивирует task+result и пишет сводку; демон не трогает.

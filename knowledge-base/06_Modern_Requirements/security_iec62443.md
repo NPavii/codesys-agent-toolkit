@@ -45,5 +45,5 @@
 
 ## TODO
 
-* [ ] CODESYS Security Whitepaper (PDF) — скачать в `Library/_ref/`.
+* [ ] CODESYS Security Whitepaper (PDF) — скачать в папку эталонных материалов.
 * [ ] Практика: включить User Management + сертификаты на тестовом SoftPLC.

@@ -53,7 +53,7 @@ solutions/activeConfiguration/coUnit_xunit_testresults.xml`).
 | System | Приложение целиком на симуляторе | SoftPLC + скрипты MCP/моста |
 | Virtual commissioning | Логика против цифрового двойника | CODESYS Simulation Interface (PDE) / внешние симуляторы через Modbus TCP |
 
-## Что даёт нам мост/MCP (см. Rules/02)
+## Что даёт нам мост/MCP (см. docs/02-bridge.md)
 
 * Автотесты «на лету»: `build` после каждой правки (критерий 0/0),
   `eval` для программных проверок объектов.

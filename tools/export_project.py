@@ -6,10 +6,11 @@
 # folder structure on disk.
 #
 # Usage:
-#   python Tools/export_project.py [--project Project/<My>/<my>.project]
-#                                  [--out Project/<My>/Export_<timestamp>]
-#                                  [--path ""]            # root object path inside project
-#                                  [--timeout 300]
+#   set CODESYS_BRIDGE_DIR=C:\path\to\codesys-mcp-server\bridge
+#   python export_project.py --project C:\path\to\<my>.project
+#                          [--out <dir>]            # default: <project dir>/Export_<timestamp>
+#                          [--path ""]              # root object path inside project
+#                          [--timeout 300]
 #
 # Output:
 #   <out>/<ObjectPath>/<Object>.txt   - code of every object (header + DECLARATION + IMPLEMENTATION)
@@ -25,11 +26,11 @@ import sys
 import time
 
 WS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BRIDGE = os.path.join(WS, "CodeSYS-MCP", "bridge")
+# Bridge directory (contains bridge_client.py / bridge_daemon.cmd) is configured
+# by the user: env CODESYS_BRIDGE_DIR, otherwise "bridge/" next to this script.
+BRIDGE = os.environ.get("CODESYS_BRIDGE_DIR", os.path.join(WS, "bridge"))
 CLIENT = os.path.join(BRIDGE, "bridge_client.py")
 DAEMON_CMD = os.path.join(BRIDGE, "bridge_daemon.cmd")
-
-DEFAULT_PROJECT = os.path.join(WS, "Project", "Mhw2.5", "mhw2.7.project")
 
 ILLEGAL = re.compile(r'[<>:"/\\|?*\x00-\x1f]')
 
@@ -167,8 +168,8 @@ def walk(node, out_dir, rel_parts, index):
 
 def main():
     ap = argparse.ArgumentParser(description="Export CODESYS project code to txt files.")
-    ap.add_argument("--project", default=DEFAULT_PROJECT,
-                    help="path to .project file (default: %(default)s)")
+    ap.add_argument("--project", required=True,
+                    help="path to .project file")
     ap.add_argument("--out", default=None,
                     help="output directory (default: <project dir>/Export_<timestamp>)")
     ap.add_argument("--path", default="",

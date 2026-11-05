@@ -1,8 +1,7 @@
 # Паттерны конечных автоматов: PackML (ISA TR88.00.02)
 
-> Полный разбор стандарта, 11 эталонных репозиториев и выводы для Kimi_Lib:
-> [Library/_ref/PackML/README.md](../../Library/_ref/PackML/README.md) — там
-> таблицы состояний/команд/переходов, PackTags и архитектура SPT.
+> Полный разбор стандарта и 11 эталонных репозиториев — в
+> [github_projects.md](../01_Projects_and_Templates/github_projects.md).
 > Здесь — сжатая рабочая выжимка для проектирования.
 
 ## Модель в трёх строках
@@ -50,7 +49,7 @@ END_CASE
 1. Таблица валидных переходов «команда × состояние» (строже маски
    SupportedStates).
 2. Структуры PackTags: `Command/Status/Admin` по TR88.00.02-2022
-   (минимум ~14 тегов — см. `Library/_ref/PackML/README.md`, раздел 3).
+   (минимум ~14 тегов — см. PackML Implementation Guide (OMAC), раздел 3).
 3. Таймеры: StateTimeCurrent, ModeTimeCurrent, CumulativeTimes.
 4. StopReason + ProductData (Processed/Defective) — задел под OEE.
 5. Протокол команд через ChangeRequest (письмо → Request → применение → сброс).
